@@ -1,0 +1,13 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Irc'
+      'submenu': [
+        { 'label': 'Open', 'command': 'irc:toggle' }
+        { 'label': 'Connect', 'command': 'irc:connect' }
+        { 'label': 'Disconnect', 'command': 'irc:disconnect' }
+      ]
+    ]
+  }
+]
