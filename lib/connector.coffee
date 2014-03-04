@@ -9,7 +9,7 @@ class Client
     config = options
     console.log config
     @client = new Irc.Client(config.host, config.nickname, {
-      channels: config.channels.split ',',
+      channels: config.channels.split(','),
       debug: config.debug,
       secure: config.secure,
       port: parseInt(config.port),
