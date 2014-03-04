@@ -1,19 +1,17 @@
 Irc = require 'irc';
 
 module.exports =
-class Client
+class Connector
 
-  config = []
+  client: null
 
   constructor: (options) ->
-    config = options
-
-    @client = new Irc.Client(config.host, config.nickname, {
-      channels: config.channels.split(','),
-      debug: config.debug,
-      secure: config.secure,
-      port: parseInt(config.port),
-      password: config.serverPassword,
+    @client = new Irc.Client(options.host, options.nickname, {
+      channels: options.channels.split(','),
+      debug: options.debug,
+      secure: options.secure,
+      port: parseInt(options.port),
+      password: options.serverPassword,
       selfSigned: true,
       autoConnect: false
     });
@@ -28,3 +26,6 @@ class Client
 
   disconnect: =>
     @client.disconnect()
+
+  clearEvents: =>
+    @client.removeAllListeners()

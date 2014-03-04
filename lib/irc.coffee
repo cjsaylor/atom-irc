@@ -39,7 +39,9 @@ module.exports =
 
   initializeIrc: (reinitialized)->
     return if @client is not null and not reinitialized
-    @client.disconnect() if @client is not null
+    if @client is not null
+      @client.disconnect()
+      @client.clearEvents()
     console.log 'Initializing IRC' if atom.config.get('irc.debug')
     @client = new Client atom.config.get('irc')
     @bindIrcEvents()
