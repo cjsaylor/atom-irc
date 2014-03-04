@@ -7,23 +7,24 @@ class Client
 
   constructor: (options) ->
     config = options
-    console.log config
+
     @client = new Irc.Client(config.host, config.nickname, {
       channels: config.channels.split(','),
       debug: config.debug,
       secure: config.secure,
       port: parseInt(config.port),
       password: config.serverPassword,
-      selfSigned: true
+      selfSigned: true,
+      autoConnect: false
     });
-    @client.addListener 'error', (message) =>
-      console.log('Error: ' + message)
     @client.addListener 'notice', (from, to, text) =>
       @client.say('NickServ', 'identify ' + config.password) if from is 'NickServ'
 
   on: (event, callback) =>
-    console.log 'Binding ' + event
     @client.addListener(event, callback)
+
+  connect: =>
+    @client.connect()
 
   disconnect: =>
     @client.disconnect()

@@ -16,13 +16,16 @@ module.exports =
     serverPassword: ""
     channels: ""
     debug: false
+    connectOnStartup: false
 
   activate: (state) ->
     @ircView = new IrcView(state.ircViewState)
     @ircStatusView = new IrcStatusView()
+    atom.config.observe 'irc', =>
+      @initializeIrc true
     @initializeIrc()
     atom.workspaceView.command 'irc:connect', =>
-      @initializeIrc true
+      @client.connect()
     atom.workspaceView.command 'irc:disconnect', =>
       @client.disconnect()
 
@@ -36,19 +39,23 @@ module.exports =
 
   initializeIrc: (reinitialized)->
     return if @client is not null and not reinitialized
-    console.log 'Initializing IRC'
+    @client.disconnect() if @client is not null
+    console.log 'Initializing IRC' if atom.config.get('irc.debug')
     @client = new Client atom.config.get('irc')
     @bindIrcEvents()
+    @client.connect() if atom.config.get('irc.connectOnStartup')
 
   bindIrcEvents: ->
     @client.on 'message', (from, to, message) =>
       @ircStatusView
         .addClass 'notify'
         .removeClass 'error connected'
+      # Temporary until view is fleshed out
       console.log from + ': ' + message
     @client.on 'error', (message) =>
       @ircStatusView.removeClass 'connected notify'
       @ircStatusView.addClass 'error'
-      console.error 'IRC Error: ' + message
+      console.error 'IRC Error: ' + message if atom.config.get('irc.debug')
     @client.on 'join', (channel, who) =>
+      # Temporary until view is fleshed out
       console.log '%s has joined %s', who, channel
