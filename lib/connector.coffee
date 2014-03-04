@@ -19,7 +19,7 @@ class Client
     @client.addListener 'error', (message) =>
       console.log('Error: ' + message)
     @client.addListener 'notice', (from, to, text) =>
-      @client.say('NickServ', 'identify ' + config.password)
+      @client.say('NickServ', 'identify ' + config.password) if from is 'NickServ'
 
   on: (event, callback) =>
     console.log 'Binding ' + event
