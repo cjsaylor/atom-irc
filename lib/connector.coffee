@@ -19,10 +19,11 @@ class Connector
       password: options.serverPassword,
       selfSigned: true,
       autoConnect: false
+      retryCount: retryCount
     });
     @emitter = new EventEmitter()
     @client.on 'notice', (from, to, text) =>
-      @client.say('NickServ', 'identify ' + options.password) if from is 'NickServ'
+      @client.say('NickServ', 'identify ' + options.password) if from is 'NickServ' and text.indexOf 'identify' >= 0
 
   on: (event, callback) =>
     if event in ['disconnected', 'connected']
@@ -33,7 +34,7 @@ class Connector
 
   connect: =>
     return if @connected
-    @client.connect retryCount, =>
+    @client.connect =>
       @connected = true
       @emitter.emit('connected')
 
