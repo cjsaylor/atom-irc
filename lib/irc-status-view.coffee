@@ -10,7 +10,7 @@ class IrcStatusView extends View
   initialize: ->
     @on 'click', (e) =>
       e.preventDefault()
-      @parent().removeClass('notify').addClass('connected') if @parent().hasClass 'notify'
+      @removeClass().addClass 'connected' if @hasClass 'notify'
       atom.workspaceView.trigger 'irc:toggle'
     @setTooltip("Open IRC chat.")
     @attach()
