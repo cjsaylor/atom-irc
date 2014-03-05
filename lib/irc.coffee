@@ -9,8 +9,8 @@ module.exports =
 
   configDefaults:
     host: ""
-    port: "6697"
-    secure: true
+    port: ""
+    secure: false
     nickname: ""
     password: ""
     serverPassword: ""
