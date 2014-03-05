@@ -1,9 +1,14 @@
 Irc = require 'irc';
+{EventEmitter} = require 'events'
 
 module.exports =
 class Connector
 
+  retryCount = 3
+
   client: null
+  emitter: null
+  connected: false
 
   constructor: (options) ->
     @client = new Irc.Client(options.host, options.nickname, {
@@ -15,17 +20,33 @@ class Connector
       selfSigned: true,
       autoConnect: false
     });
-    @client.addListener 'notice', (from, to, text) =>
+    @emitter = new EventEmitter()
+    @client.on 'notice', (from, to, text) =>
       @client.say('NickServ', 'identify ' + options.password) if from is 'NickServ'
 
   on: (event, callback) =>
-    @client.addListener(event, callback)
+    if event in ['disconnected', 'connected']
+      @emitter.on(event, callback)
+    else
+      @client.on(event, callback)
+    @
 
   connect: =>
-    @client.connect()
+    return if @connected
+    @client.connect retryCount, =>
+      @connected = true
+      @emitter.emit('connected')
 
   disconnect: =>
-    @client.disconnect()
+    return if not @connected or @client.conn is null
+    @client.disconnect =>
+      @connected = false
+      @emitter.emit('disconnected')
 
   clearEvents: =>
     @client.removeAllListeners()
+    @emitter.removeAllListeners()
+    @
+
+  disband: =>
+    @clearEvents().disconnect()
