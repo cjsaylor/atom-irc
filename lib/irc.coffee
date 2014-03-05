@@ -44,21 +44,15 @@ module.exports =
     console.log 'Initializing IRC' if atom.config.get('irc.debug')
     @client = new Client atom.config.get('irc')
     @client
-      .on 'connected', =>
-        @ircStatusView
-          .removeClass('error notify')
-          .addClass('connected')
-      .on 'disconnected', =>
-        @ircStatusView.removeClass('error notify connected')
+      .on 'connected', => @ircStatusView.removeClass().addClass('connected')
+      .on 'disconnected', => @ircStatusView.removeClass()
     @bindIrcEvents()
     @client.connect() if atom.config.get('irc.connectOnStartup')
 
   bindIrcEvents: ->
     @client
       .on 'message', (from, to, message) =>
-        @ircStatusView
-          .addClass 'notify'
-          .removeClass 'error connected'
+        @ircStatusView.removeClass().addClass 'notify'
         # Temporary until view is fleshed out
         console.log from + ': ' + message
       .on 'error', @errorHandler.bind @
@@ -68,6 +62,5 @@ module.exports =
         console.log '%s has joined %s', who, channel
 
   errorHandler: (message) ->
-    @ircStatusView.removeClass 'connected notify'
-    @ircStatusView.addClass 'error'
+    @ircStatusView.removeClass().addClass 'error'
     console.error 'IRC Error: ' + message if atom.config.get('irc.debug')
