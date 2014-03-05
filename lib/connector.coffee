@@ -16,7 +16,7 @@ class Connector
       autoConnect: false
     });
     @client.addListener 'notice', (from, to, text) =>
-      @client.say('NickServ', 'identify ' + config.password) if from is 'NickServ'
+      @client.say('NickServ', 'identify ' + options.password) if from is 'NickServ'
 
   on: (event, callback) =>
     @client.addListener(event, callback)
