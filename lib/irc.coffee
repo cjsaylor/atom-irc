@@ -39,7 +39,7 @@ module.exports =
     ircStatusState: @ircStatusView.serialize()
 
   initializeIrc: (reinitialized)->
-    return if @client is not null and not reinitialized
+    return if @client and not reinitialized
     @client.disband() unless @client is null
     console.log 'Initializing IRC' if atom.config.get('irc.debug')
     @client = new Client atom.config.get('irc')
