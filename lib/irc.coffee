@@ -61,10 +61,13 @@ module.exports =
           .removeClass 'error connected'
         # Temporary until view is fleshed out
         console.log from + ': ' + message
-      .on 'error', (message) =>
-        @ircStatusView.removeClass 'connected notify'
-        @ircStatusView.addClass 'error'
-        console.error 'IRC Error: ' + message if atom.config.get('irc.debug')
+      .on 'error', @errorHandler.bind @
+      .on 'abort', @errorHandler.bind @
       .on 'join', (channel, who) =>
         # Temporary until view is fleshed out
         console.log '%s has joined %s', who, channel
+
+  errorHandler: (message) ->
+    @ircStatusView.removeClass 'connected notify'
+    @ircStatusView.addClass 'error'
+    console.error 'IRC Error: ' + message if atom.config.get('irc.debug')
