@@ -18,16 +18,21 @@ module.exports =
     debug: false
     connectOnStartup: false
 
-  activate: (state) ->
-    @ircView = new IrcView(state.ircViewState)
+  activate: ->
     @ircStatusView = new IrcStatusView()
+    @ircView = new IrcView()
+    @ircView.command 'irc:send', (e, to, message) =>
+      to = to || atom.config.get 'irc.channels'
+      @client.sendMessage to, message
     @initializeIrc()
-    atom.config.observe 'irc', =>
-      @initializeIrc true
+    atom.workspaceView.command 'irc:toggle', =>
+      @ircView.show()
     atom.workspaceView.command 'irc:connect', =>
       @client.connect()
     atom.workspaceView.command 'irc:disconnect', =>
       @client.disconnect()
+    atom.config.observe 'irc', =>
+      @initializeIrc true
 
   deactivate: ->
     @ircView.destroy()
@@ -53,13 +58,11 @@ module.exports =
     @client
       .on 'message', (from, to, message) =>
         @ircStatusView.removeClass().addClass 'notify'
-        # Temporary until view is fleshed out
-        console.log from + ': ' + message
+        @ircView.addMessage(from, to, message)
       .on 'error', @errorHandler.bind @
       .on 'abort', @errorHandler.bind @
       .on 'join', (channel, who) =>
-        # Temporary until view is fleshed out
-        console.log '%s has joined %s', who, channel
+        console.log '%s has joined %s', who, channel if atom.config.get 'irc.debug'
 
   errorHandler: (message) ->
     @ircStatusView.removeClass().addClass 'error'

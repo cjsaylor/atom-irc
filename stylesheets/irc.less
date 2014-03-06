@@ -4,3 +4,28 @@ span#irc-status > a { color: @text-color-subtle; }
 span#irc-status.connected > a { color: @text-color; }
 span#irc-status.error > a { color: @text-color-error; }
 span#irc-status.notify > a { color: @text-color-warning; }
+
+.irc {
+  .irc-output {
+    p {
+      margin-bottom: 2px;
+    }
+    min-height: 200px;
+    max-height: 400px;
+    overflow: auto;
+  }
+  ::-webkit-input-placeholder {
+    color: @text-color-subtle;
+  }
+  button {
+    display: inline;
+    margin-left: 15px;
+  }
+  input[type=text] {
+    width: 400px;
+    background-color: lighten(@input-background-color, 5%);
+    border: 1px solid @input-border-color;
+    color: @text-color;
+    padding: @component-padding / 3 @component-padding / 2;
+  }
+}
