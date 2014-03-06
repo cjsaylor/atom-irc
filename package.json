@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "description": "IRC client for Atom.io.",
-  "repository": "https://github.com/cjsaylor/irc",
+  "repository": "https://github.com/cjsaylor/atom-irc",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
