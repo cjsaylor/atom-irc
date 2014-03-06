@@ -33,7 +33,7 @@ class Connector
     @
 
   sendMessage: (to, message) ->
-    @client.say to, message if to and message
+    @client.say to, message if to and message and @connected
 
   connect: =>
     return if @connected
