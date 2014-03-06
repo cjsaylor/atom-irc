@@ -32,6 +32,9 @@ class Connector
       @client.on(event, callback)
     @
 
+  sendMessage: (to, message) ->
+    @client.say to, message if to and message
+
   connect: =>
     return if @connected
     @client.connect =>
