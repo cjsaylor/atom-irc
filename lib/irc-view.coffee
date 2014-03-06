@@ -31,6 +31,10 @@ class IrcView extends View
     @find('.irc-input').focus()
     scrollToEnd()
 
+  destroy: ->
+    @unsubscribe()
+    @detach()
+
   addMessage: (from, to, message) ->
     appendFunction = -> ircOutput.append $('<p/>').text from + ': ' + message
     if ircOutput.prop('scrollHeight') is ircOutput.scrollTop() + ircOutput.outerHeight()

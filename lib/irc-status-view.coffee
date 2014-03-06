@@ -15,6 +15,10 @@ class IrcStatusView extends View
     @setTooltip("Open IRC chat.")
     @attach()
 
+  destroy: ->
+    @unsubscribe()
+    @detach()
+
   attach: =>
     statusBar = atom.workspaceView.statusBar
     if statusBar
