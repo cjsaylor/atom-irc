@@ -1,5 +1,5 @@
 {
-  "name": "atom-irc",
+  "name": "irc",
   "main": "./lib/irc",
   "version": "0.0.1",
   "private": true,
