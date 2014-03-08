@@ -25,6 +25,9 @@ class IrcView extends ScrollView
   getTitle: ->
     'IRC ' + atom.config.get('irc.channels')
 
+  destroy: ->
+    @unsubscribe()
+
   handleEvents: ->
     @subscribe this, 'core:move-up', => @scrollUp()
     @subscribe this, 'core:move-down', => @scrollDown()
