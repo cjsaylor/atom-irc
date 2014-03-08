@@ -12,7 +12,7 @@ class Connector
 
   constructor: (options) ->
     @client = new Irc.Client(options.host, options.nickname, {
-      channels: options.channels.split(','),
+      channels: options.channels?.split(','),
       debug: options.debug,
       secure: options.secure,
       port: parseInt(options.port),
