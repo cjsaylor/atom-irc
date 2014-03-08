@@ -6,14 +6,20 @@ span#irc-status.error > a { color: @text-color-error; }
 span#irc-status.notify > a { color: @text-color-warning; }
 
 .irc {
+  color: @text-color;
+  background-color: @app-background-color;
   .irc-output {
     p {
       margin-bottom: 2px;
     }
-    min-height: 200px;
-    max-height: 400px;
+    position: absolute;
+    top: 0;
+    bottom: 60px;
+    padding: 5px 12px 0 12px;
+    width: 100%;
     overflow: auto;
   }
+  box-sizing: border-box;
   ::-webkit-input-placeholder {
     color: @text-color-subtle;
   }
@@ -22,10 +28,13 @@ span#irc-status.notify > a { color: @text-color-warning; }
     margin-left: 15px;
   }
   input[type=text] {
-    width: 400px;
+    position: absolute;
+    bottom: 10px;
+    width: 96%;
     background-color: lighten(@input-background-color, 5%);
     border: 1px solid @input-border-color;
     color: @text-color;
     padding: @component-padding / 3 @component-padding / 2;
+    margin: 10px;
   }
 }

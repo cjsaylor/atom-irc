@@ -1,3 +1,4 @@
+url = require 'url'
 IrcView = require './irc-view'
 IrcStatusView = require './irc-status-view'
 Client = require './connector'
@@ -21,19 +22,25 @@ module.exports =
   activate: ->
     @ircStatusView = new IrcStatusView()
     @ircView = new IrcView()
-    @ircView.command 'irc:send', (e, to, message) =>
-      to = to || atom.config.get 'irc.channels'
-      @client.sendMessage to, message
     @initializeIrc()
     atom.workspaceView.command 'irc:toggle', =>
-      @ircView.show()
+      atom.workspace.open('irc://chat', split: 'right', searchAllPanes: true).done (ircView) =>
+        ircView.command 'irc:send', (e, to, message) =>
+          to = to || atom.config.get 'irc.channels'
+          @client.sendMessage to, message
+        ircView.handleEvents()
+        ircView.find('.irc-input').focus()
     atom.workspaceView.command 'irc:connect', =>
       @client.connect()
     atom.workspaceView.command 'irc:disconnect', =>
       @client.disconnect()
     atom.config.observe 'irc', =>
       @initializeIrc true
-
+    atom.workspace.registerOpener (uriToOpen) =>
+      {protocol, host} = url.parse uriToOpen
+      return unless protocol is 'irc:'
+      if host is 'chat'
+        @ircView
   deactivate: ->
     @ircView.destroy()
     @ircStatusView.destory()
@@ -58,7 +65,7 @@ module.exports =
     @client
       .on 'message', (from, to, message) =>
         @ircStatusView.removeClass().addClass 'notify'
-        @ircView.addMessage(from, to, message)
+        @ircView.addMessage from, to, message
       .on 'error', @errorHandler.bind @
       .on 'abort', @errorHandler.bind @
       .on 'join', (channel, who) =>
