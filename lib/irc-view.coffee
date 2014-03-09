@@ -40,7 +40,9 @@ class IrcView extends ScrollView
 
   addMessage: (from, to, message) =>
     ircOutput = @find('.irc-output')
-    appendFunction = => ircOutput.append $('<p/>').text(util.format '[%s] <%s> %s', new Date().toLocaleTimeString(), from, message)
+    line = $('<p/>')
+    line.addClass 'pm' if to is atom.config.get 'irc.nickname'
+    appendFunction = => ircOutput.append line.text(util.format '[%s] <%s> %s', new Date().toLocaleTimeString(), from, message)
     if ircOutput.prop('scrollHeight') is ircOutput.scrollTop() + ircOutput.outerHeight()
       appendFunction()
       ircOutput.scrollTop ircOutput.prop 'scrollHeight'
