@@ -1,3 +1,3 @@
 module.exports = [
-  key: 'msg', pattern: /^\/msg\s(\w.*)\s(\w.*)/
+  key: 'msg', pattern: /^\/msg\s(\w*)\s(.*)/i
 ]
