@@ -1,4 +1,6 @@
+util = require 'util'
 Irc = require 'irc';
+commands = require './commands'
 {EventEmitter} = require 'events'
 
 module.exports =
@@ -32,8 +34,17 @@ class Connector
       @client.on(event, callback)
     @
 
-  sendMessage: (to, message) ->
-    @client.say to, message if to and message and @connected
+  sendMessage: (message) ->
+    return unless message and @connected
+    for command in commands
+      if command.pattern.test message
+        tokens = command.pattern.exec message
+        return @senders()[command.key] tokens
+    @senders().default message
+
+  senders: =>
+    default: (message) => @client.say atom.config.get('irc.channels'), message
+    msg: (tokens) => @client.say tokens[1], tokens[2] if tokens.length is 3
 
   connect: =>
     return if @connected

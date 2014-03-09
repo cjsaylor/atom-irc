@@ -25,9 +25,8 @@ module.exports =
     @initializeIrc()
     atom.workspaceView.command 'irc:toggle', =>
       atom.workspace.open('irc://chat', split: 'right', searchAllPanes: true).done (ircView) =>
-        ircView.command 'irc:send', (e, to, message) =>
-          to = to || atom.config.get 'irc.channels'
-          @client.sendMessage to, message
+        ircView.command 'irc:send', (e, message) =>
+          @client.sendMessage message
         ircView.handleEvents()
         ircView.find('.irc-input').focus()
     atom.workspaceView.command 'irc:connect', =>
