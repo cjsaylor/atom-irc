@@ -1,7 +1,7 @@
 {
   "name": "irc",
   "main": "./lib/irc",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "private": true,
   "description": "IRC client for Atom.io.",
   "repository": "https://github.com/cjsaylor/atom-irc",
