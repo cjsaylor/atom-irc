@@ -42,7 +42,7 @@ module.exports =
         @ircView
   deactivate: ->
     @ircView.destroy()
-    @ircStatusView.destory()
+    @ircStatusView.destroy()
     @client.disband()
 
   serialize: ->
