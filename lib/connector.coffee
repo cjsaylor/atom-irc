@@ -45,6 +45,7 @@ class Connector
   senders: =>
     default: (message) => @client.say atom.config.get('irc.channels'), message
     msg: (tokens) => @client.say tokens[1], tokens[2] if tokens.length is 3
+    whois: (tokens) => @client.whois tokens[1] if tokens.length is 2
 
   connect: =>
     return if @connected
