@@ -34,7 +34,7 @@ class IrcView extends ScrollView
     @ircMessage.on 'keydown', (e) =>
       if e.keyCode is 13 and @ircMessage.val()
         @trigger 'irc:send', [null, @ircMessage.val()]
-        @addMessage 'Me', null, @ircMessage.val()
+        @addMessage atom.config.get('irc.nickname'), null, @ircMessage.val()
         @ircMessage.val ''
     @
 
