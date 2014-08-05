@@ -43,7 +43,9 @@ class IrcView extends ScrollView
     line = $('<p/>')
     line.addClass 'pm' if to is atom.config.get 'irc.nickname'
     line.addClass 'whois' if from is 'WHOIS'
-    appendFunction = => ircOutput.append line.text(util.format '[%s] <%s> %s', new Date().toLocaleTimeString(), from, message)
+    line.addClass 'from-me' if from is atom.config.get 'irc.nickname'
+    line.addClass "from-#{from}"
+    appendFunction = => ircOutput.append line.html(util.format '<span class="ts">%s</span> <span class="un">%s</span> <span class="msg">%s</span>', new Date().toLocaleTimeString(), from, message)
     if ircOutput.prop('scrollHeight') is ircOutput.scrollTop() + ircOutput.outerHeight()
       appendFunction()
       ircOutput.scrollTop ircOutput.prop 'scrollHeight'
