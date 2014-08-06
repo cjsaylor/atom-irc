@@ -18,6 +18,7 @@ module.exports =
     channels: ""
     debug: false
     connectOnStartup: false
+    evalHtml: false
 
   activate: ->
     @ircStatusView = new IrcStatusView()
