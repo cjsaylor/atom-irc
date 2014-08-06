@@ -13,6 +13,7 @@ This package is a work in progress. Feel free to open issues or pull requests!
 * Status bar with notifications of new messages.
 * Support for PMs from users.
 * Support for custom commands (i.e. `/msg <nick> <message>`).
+* Customizable output (thanks @adamclerk).
 
 ### Roadmap
 
