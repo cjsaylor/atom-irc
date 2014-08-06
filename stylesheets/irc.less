@@ -18,6 +18,19 @@ span#irc-status.notify > a { color: @text-color-warning; }
     padding: 5px 12px 0 12px;
     width: 100%;
     overflow: auto;
+
+    .ts::before {
+      content: "["
+    }
+    .ts::after {
+      content: "]"
+    }
+    .un::before {
+      content: "<"
+    }
+    .un::after {
+      content: ">"
+    }
   }
   box-sizing: border-box;
   ::-webkit-input-placeholder {
