@@ -18,7 +18,7 @@ class Connector
       debug: options.debug,
       secure: options.secure,
       port: parseInt(options.port),
-      password: options.serverPassword,
+      password: options.serverPassword or null,
       selfSigned: true,
       autoConnect: false
       retryCount: retryCount
@@ -51,13 +51,13 @@ class Connector
     return if @connected
     @client.connect =>
       @connected = true
-      @emitter.emit('connected')
+      @emitter.emit 'connected'
 
   disconnect: =>
     return if not @connected or @client.conn is null
     @client.disconnect =>
       @connected = false
-      @emitter.emit('disconnected')
+      @emitter.emit 'disconnected'
 
   clearEvents: =>
     @client.removeAllListeners()
