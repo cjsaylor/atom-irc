@@ -34,7 +34,7 @@ module.exports =
       @client.connect()
     atom.workspaceView.command 'irc:disconnect', =>
       @client.disconnect()
-    atom.config.observe 'irc', =>
+    atom.config.onDidChange 'irc', =>
       @initializeIrc true
     atom.workspace.registerOpener (uriToOpen) =>
       {protocol, host} = url.parse uriToOpen
