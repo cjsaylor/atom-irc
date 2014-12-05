@@ -74,4 +74,6 @@ module.exports =
 
   errorHandler: (message) ->
     @ircStatusView.removeClass().addClass 'error'
-    console.error 'IRC Error: ' + message if atom.config.get('irc.debug')
+    @client.disconnect() if @client
+    console.error 'IRC Error: ' + message.args.join ' ' if message.args and atom.config.get('irc.debug')
+    console.error 'IRC Error: ' + message if typeof message is String
