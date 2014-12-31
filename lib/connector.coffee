@@ -25,7 +25,7 @@ class Connector
     });
     @emitter = new EventEmitter()
     @client.on 'notice', (from, to, text) =>
-      @client.say('NickServ', 'identify ' + options.password) if from is 'NickServ' and text.indexOf 'identify' >= 0
+      @client.say('NickServ', 'identify ' + options.password) if from is 'NickServ' and text.indexOf('identify') >= 0
 
   on: (event, callback) =>
     if event in ['disconnected', 'connected']
