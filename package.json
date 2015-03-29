@@ -11,5 +11,12 @@
   },
   "dependencies": {
     "irc": "git://github.com/nandub/node-irc.git"
+  },
+  "consumedServices": {
+    "status-bar": {
+      "versions": {
+        "^1.0.0": "consumeStatusBar"
+      }
+    }
   }
 }
