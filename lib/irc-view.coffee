@@ -1,4 +1,4 @@
-{$, ScrollView} = require 'atom'
+{$, ScrollView} = require 'atom-space-pen-views'
 util = require 'util'
 
 module.exports =
@@ -13,30 +13,25 @@ class IrcView extends ScrollView
         @div '', class: 'irc-output native-key-bindings'
         @input outlet: 'ircMessage', type: 'text', class: 'irc-input native-key-bindings', placeholder: 'Enter your message...'
 
-  constructor: (state) ->
-    @ircOutput = state
-    super
+  initialize: (@client) ->
+    @sendCommand = atom.commands.add 'atom-workspace', 'irc:send', (e) =>
+      @client.sendMessage e.detail.message
 
-  initialize: ->
-    @handleEvents
-    if not @ircOutput
-      @ircOutput = @find('.irc-output')
+  attached: ->
+    @ircOutput = @find('.irc-output')
+    @ircMessage.on 'keydown', (e) =>
+      if e.keyCode is 13 and @ircMessage.val()
+        workspaceEl = atom.views.getView(atom.workspace)
+        atom.commands.dispatch workspaceEl, 'irc:send', message: @ircMessage.val()
+        @addMessage atom.config.get('irc.nickname'), null, @ircMessage.val()
+        @ircMessage.val ''
 
   getTitle: ->
     'IRC ' + atom.config.get('irc.channels')
 
   destroy: ->
-    @unsubscribe()
-
-  handleEvents: ->
-    @subscribe this, 'core:move-up', => @scrollUp()
-    @subscribe this, 'core:move-down', => @scrollDown()
-    @ircMessage.on 'keydown', (e) =>
-      if e.keyCode is 13 and @ircMessage.val()
-        @trigger 'irc:send', [@ircMessage.val()]
-        @addMessage atom.config.get('irc.nickname'), null, @ircMessage.val()
-        @ircMessage.val ''
-    @
+    @sendCommand.dispose()
+    @detach()
 
   addMessage: (from, to, message) =>
     ircOutput = @find('.irc-output')

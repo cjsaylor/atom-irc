@@ -7,10 +7,11 @@
   "repository": "https://github.com/cjsaylor/atom-irc",
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">=0.188.0"
   },
   "dependencies": {
-    "irc": "git://github.com/nandub/node-irc.git"
+    "atom-space-pen-views": "^2.0.3",
+    "irc": "0.3.7"
   },
   "consumedServices": {
     "status-bar": {
