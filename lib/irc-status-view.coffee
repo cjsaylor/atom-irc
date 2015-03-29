@@ -1,27 +1,23 @@
-{$, View} = require 'atom'
+{CompositeDisposable} = require 'atom'
+{$, View} = require 'atom-space-pen-views'
 
 module.exports =
 class IrcStatusView extends View
+
+  constructor: ->
+    @disposables = new CompositeDisposable
+    super
 
   @content: ->
     @span id: 'irc-status', =>
       @a href: '#', class: 'irc-status inline-block', tabindex: '-2', 'IRC'
 
   initialize: ->
-    @on 'click', (e) =>
-      e.preventDefault()
-      @removeClass().addClass 'connected' if @hasClass 'notify'
-      atom.workspaceView.trigger 'irc:toggle'
-    @setTooltip("Open IRC chat.")
-    @attach()
+    @click =>
+      @removeClass().addClass('connected') if @hasClass('notify')
+      workspaceEl = atom.views.getView(atom.workspace)
+      atom.commands.dispatch workspaceEl, 'irc:toggle'
 
   destroy: ->
-    @unsubscribe()
+    @disposables.dispose()
     @detach()
-
-  attach: =>
-    statusBar = atom.workspaceView.statusBar
-    if statusBar
-      statusBar.appendLeft(this)
-    else
-      @subscribe(atom.packages.once('activated', @attach))
