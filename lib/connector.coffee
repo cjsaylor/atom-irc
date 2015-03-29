@@ -17,7 +17,7 @@ class Connector
       channels: options.channels?.split(','),
       debug: options.debug,
       secure: options.secure,
-      port: parseInt(options.port),
+      port: parseInt(options.port || 6697),
       password: options.serverPassword or null,
       selfSigned: true,
       autoConnect: false
