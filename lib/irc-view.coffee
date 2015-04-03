@@ -1,5 +1,6 @@
 {$, ScrollView} = require 'atom-space-pen-views'
 util = require 'util'
+Autolinker = require('autolinker')
 
 module.exports =
 class IrcView extends ScrollView
@@ -51,12 +52,14 @@ class IrcView extends ScrollView
 
     msg = $('<span>')
     un.addClass 'msg'
+    autolinker = new Autolinker(newWindow: false)
+    linkedText = autolinker.link(message)
     if atom.config.get('irc.evalHtml')
       msg.addClass 'html'
-      msg.html(util.format '%s', message)
+      msg.html(util.format '%s', linkedText)
     else
       msg.addClass 'txt'
-      msg.text(util.format '%s', message)
+      msg.text(util.format '%s', linkedText)
 
     appendFunction = => ircOutput.append line.append ts, [un, msg]
     if ircOutput.prop('scrollHeight') is ircOutput.scrollTop() + ircOutput.outerHeight()
