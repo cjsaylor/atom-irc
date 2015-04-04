@@ -43,6 +43,7 @@ class IrcView extends ScrollView
     line.addClass 'from-me' if from is atom.config.get 'irc.nickname'
     line.addClass 'connected' if from is 'CONNECTED'
     line.addClass 'disconnected' if from is 'DISCONNECTED'
+    line.addClass 'joined' if from is 'JOINED'
     line.addClass "from-#{from}"
 
     ts = $('<span>')
