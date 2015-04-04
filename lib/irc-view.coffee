@@ -17,7 +17,7 @@ class IrcView extends ScrollView
   initialize: (@client) ->
     @sendCommand = atom.commands.add 'atom-workspace', 'irc:send', (e) =>
       @client.sendMessage e.detail.message
-    @autolinker = new Autolinker(newWindow: false)
+    @autolinker = new Autolinker(newWindow: false, email: false, twitter: false, phone: false)
 
   attached: ->
     @ircOutput = @find('.irc-output')
@@ -55,8 +55,7 @@ class IrcView extends ScrollView
     un.addClass 'msg'
     if atom.config.get('irc.evalHtml')
       msg.addClass 'html'
-      linkedText = @autolinker.link(message)
-      msg.html(util.format '%s', linkedText)
+      msg.html(util.format '%s', @autolinker.link(message))
     else
       msg.addClass 'txt'
       msg.text(util.format '%s', message)
