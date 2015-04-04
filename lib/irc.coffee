@@ -75,8 +75,12 @@ module.exports =
     console.log 'Initializing IRC' if atom.config.get('irc.debug')
     @client = new Client atom.config.get('irc')
     @client
-      .on 'connected', => @ircStatusView.removeClass().addClass('connected')
-      .on 'disconnected', => @ircStatusView.removeClass()
+      .on 'connected', =>
+        @ircStatusView.removeClass().addClass('connected')
+        @ircView?.addMessage 'CONNECTED', null, 'You have successfully connected!'
+      .on 'disconnected', =>
+        @ircStatusView.removeClass()
+        @ircView?.addMessage 'DISCONNECTED', null, 'You have been disconnected.'
     @bindIrcEvents()
     @client.connect() if atom.config.get('irc.connectOnStartup')
 
