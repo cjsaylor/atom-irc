@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "atom-space-pen-views": "^2.0.3",
-    "irc": "0.3.7"
+    "irc": "0.3.7",
+    "autolinker": "0.17.1"
   },
   "consumedServices": {
     "status-bar": {

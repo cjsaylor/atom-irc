@@ -1,5 +1,6 @@
 {$, ScrollView} = require 'atom-space-pen-views'
 util = require 'util'
+Autolinker = require 'autolinker'
 
 module.exports =
 class IrcView extends ScrollView
@@ -16,6 +17,7 @@ class IrcView extends ScrollView
   initialize: (@client) ->
     @sendCommand = atom.commands.add 'atom-workspace', 'irc:send', (e) =>
       @client.sendMessage e.detail.message
+    @autolinker = new Autolinker(newWindow: false, email: false, twitter: false, phone: false)
 
   attached: ->
     @ircOutput = @find('.irc-output')
@@ -53,7 +55,7 @@ class IrcView extends ScrollView
     un.addClass 'msg'
     if atom.config.get('irc.evalHtml')
       msg.addClass 'html'
-      msg.html(util.format '%s', message)
+      msg.html(util.format '%s', @autolinker.link(message))
     else
       msg.addClass 'txt'
       msg.text(util.format '%s', message)
