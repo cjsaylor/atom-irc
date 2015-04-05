@@ -8,7 +8,7 @@ class IrcView extends ScrollView
   @package: null
 
   @content: ->
-    @div class: 'irc native-key-bindings', =>
+    @div class: 'irc native-key-bindings', tabindex: -1, =>
       @div class: 'input', =>
         @div '', class: 'irc-output native-key-bindings'
         @input outlet: 'ircMessage', type: 'text', class: 'irc-input native-key-bindings', placeholder: 'Enter your message...'
