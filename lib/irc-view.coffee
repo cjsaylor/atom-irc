@@ -66,3 +66,12 @@ class IrcView extends ScrollView
       ircOutput.scrollTop ircOutput.prop 'scrollHeight'
     else
       appendFunction()
+
+  focusInput: =>
+    @find('.irc-input').focus()
+    @
+
+  scrollToEnd: =>
+    ircOutput = @find '.irc-output'
+    ircOutput.scrollTop ircOutput.prop 'scrollHeight'
+    @

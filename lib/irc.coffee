@@ -52,8 +52,10 @@ module.exports =
 
     @subscriptions = new CompositeDisposable
     @subscriptions.add atom.commands.add 'atom-workspace', 'irc:toggle', =>
-      atom.workspace.open('irc://chat', split: 'right').done (ircView) =>
-        ircView.find('.irc-input').focus()
+      atom.workspace.open('irc://chat', split: 'right').then (ircView) =>
+        ircView
+          .focusInput()
+          .scrollToEnd()
     @subscriptions.add atom.commands.add 'atom-workspace', 'irc:connect', =>
       @client.connect()
     @subscriptions.add atom.commands.add 'atom-workspace', 'irc:disconnect', =>
