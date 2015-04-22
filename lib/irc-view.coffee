@@ -44,6 +44,7 @@ class IrcView extends ScrollView
     line.addClass 'connected' if from is 'CONNECTED'
     line.addClass 'disconnected' if from is 'DISCONNECTED'
     line.addClass 'joined' if from is 'JOINED'
+    line.addClass 'quit' if from is 'QUIT'
     line.addClass "from-#{from}"
 
     ts = $('<span>')
