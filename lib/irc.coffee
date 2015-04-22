@@ -39,6 +39,9 @@ module.exports =
     evalHtml:
       type: 'boolean'
       default: false
+    showJoinMessages:
+      type: 'boolean'
+      default: false
 
   activate: ->
     atom.workspace.addOpener (uriToOpen) =>
@@ -75,8 +78,12 @@ module.exports =
     console.log 'Initializing IRC' if atom.config.get('irc.debug')
     @client = new Client atom.config.get('irc')
     @client
-      .on 'connected', => @ircStatusView.removeClass().addClass('connected')
-      .on 'disconnected', => @ircStatusView.removeClass()
+      .on 'connected', =>
+        @ircStatusView.removeClass().addClass('connected')
+        @ircView?.addMessage 'CONNECTED', null, 'You have successfully connected!'
+      .on 'disconnected', =>
+        @ircStatusView.removeClass()
+        @ircView?.addMessage 'DISCONNECTED', null, 'You have been disconnected.'
     @bindIrcEvents()
     @client.connect() if atom.config.get('irc.connectOnStartup')
 
@@ -87,9 +94,13 @@ module.exports =
         @ircView?.addMessage from, to, message
       .on 'error', @errorHandler.bind @
       .on 'abort', @errorHandler.bind @
-      .on 'join', (channel, who) =>
-        console.log '%s has joined %s', who, channel if atom.config.get 'irc.debug'
       .on 'whois', (info) => @ircView.addMessage 'WHOIS', null, JSON.stringify info
+      if atom.config.get 'irc.showJoinMessages'
+        @client
+          .on 'join', (channel, who) =>
+            @ircView?.addMessage 'JOINED', null, who + ' has joined ' + channel 
+          .on 'quit', (who, reason) =>
+            @ircView?.addMessage 'QUIT', null, who + ' has quit [' + reason + ']'
 
   errorHandler: (message) ->
     @ircStatusView.removeClass().addClass 'error'
