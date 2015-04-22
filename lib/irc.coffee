@@ -96,7 +96,7 @@ module.exports =
       .on 'abort', @errorHandler.bind @
       .on 'join', (channel, who) =>
         console.log '%s has joined %s', who, channel if atom.config.get 'irc.debug'
-        @ircView?.addMessage 'JOINED', null, who + ' has joined ' + channel
+        @ircView?.addMessage 'JOINED', null, who + ' has joined ' + channel if atom.config.get('irc.showJoinMessages')
       .on 'whois', (info) => @ircView.addMessage 'WHOIS', null, JSON.stringify info
 
   errorHandler: (message) ->
